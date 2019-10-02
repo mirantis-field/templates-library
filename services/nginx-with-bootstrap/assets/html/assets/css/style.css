@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff4f4;
+}
+
+.navbar {
+  background-color: #007bff !important;
+}
+
+.navbar-brand svg {
+  height: 30px;
+  fill: #FFF;
+}
+
+.carousel {
+  background: url(../../images/homepage-platform-hero-bg-xlg.png);
+}
+
+.carousel-item {
+  background: none;
+}
