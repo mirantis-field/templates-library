@@ -30,4 +30,38 @@ services:
     source:
       image: dtr.build.us.se.dckr.org/service-template/nginx-with-bootstrap:latest
     title: NGINX with Bootstrap
-
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    creationTimestamp: "0001-01-01T00:00:00Z"
+    name: signup-database
+    platforms:
+    - linux
+  spec:
+    description: MySQL Database
+    icon: https://docker-application-template.s3.amazonaws.com/assets/mysql.png
+    parameters:
+    - defaultValue: "8.0.15"
+      description: MySQL Version
+      name: mysqlVersion
+      type: enum
+      values:
+      - description: "5.7.24"
+        value: "5.7.24"
+      - description: "5.6.42"
+        value: "5.6.42"
+    - defaultValue: "signup"
+      description: Database name
+      name: mysqlDatabaseName
+      type: string
+    - defaultValue: "gordon"
+      description: Username
+      name: mysqlUserName
+      type: string
+    - defaultValue: "password"
+      description: Password
+      name: mysqlPassword
+      type: string
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/signup-database:latest
+    title: MySQL Database for Signup App
