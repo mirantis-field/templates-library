@@ -30,4 +30,56 @@ services:
     source:
       image: dtr.build.us.se.dckr.org/service-template/nginx-with-bootstrap:latest
     title: NGINX with Bootstrap
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    name: aspnetmvcapp
+    platforms:
+      - windows
+  spec:
+    description: ASP.NET web application using the MVC Framework
+    icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
+    parameters:
+    - name: externalPort
+      description: External Port
+      type: string
+      defaultValue: "8000"
+    source:
+      image: aspnetmvcapp-svc:latest
+      # image: dtr.build.us.se.dckr.org/service-template/aspnetmvcapp:latest
+    title: ASP.NET MVC
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    name: aspnetapp
+    platforms:
+      - windows
+  spec:
+    description: ASP.NET web application
+    icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
+    parameters:
+    - name: externalPort
+      description: External Port
+      type: string
+      defaultValue: "8000"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/aspnetapp:latest
+    title: ASP.NET Web Forms
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    name: wcfapp
+    platforms:
+      - windows
+  spec:
+    description: WCF application
+    icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
+    parameters:
+    - name: externalPort
+      description: External Port
+      type: string
+      defaultValue: "8000"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/aspnetapp:latest
+    title: Windows Communication Framework (WCF)
 

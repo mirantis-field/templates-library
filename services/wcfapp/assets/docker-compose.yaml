@@ -1,0 +1,8 @@
+version: "3.6"
+services:
+  {{ .Name }}:
+    build: 
+      context: {{ .Name }}
+      dockerfile: Dockerfile.web
+    ports:
+    - {{ .Parameters.externalPort }}:80
