@@ -33,7 +33,7 @@ services:
 - apiVersion: v1alpha1
   kind: ServiceTemplate
   metadata:
-    name: aspnetmvcapp
+    name: aspnet-mvc
     platforms:
       - windows
   spec:
@@ -45,13 +45,12 @@ services:
       type: string
       defaultValue: "8000"
     source:
-      image: aspnetmvcapp-svc:latest
-      # image: dtr.build.us.se.dckr.org/service-template/aspnetmvcapp:latest
-    title: ASP.NET MVC
+      image: dtr.build.us.se.dckr.org/service-template/aspnet-mvc:latest
+    title: ASP.NET Framework - MVC
 - apiVersion: v1alpha1
   kind: ServiceTemplate
   metadata:
-    name: aspnetapp
+    name: aspnet-webforms
     platforms:
       - windows
   spec:
@@ -63,16 +62,16 @@ services:
       type: string
       defaultValue: "8000"
     source:
-      image: dtr.build.us.se.dckr.org/service-template/aspnetapp:latest
-    title: ASP.NET Web Forms
+      image: dtr.build.us.se.dckr.org/service-template/aspnet-webforms:latest
+    title: ASP.NET Framework - Web Forms
 - apiVersion: v1alpha1
   kind: ServiceTemplate
   metadata:
-    name: wcfapp
+    name: wcf
     platforms:
       - windows
   spec:
-    description: WCF application
+    description: Application implementing Windows Communication Framework (WCF)
     icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
     parameters:
     - name: externalPort
@@ -80,6 +79,5 @@ services:
       type: string
       defaultValue: "8000"
     source:
-      image: dtr.build.us.se.dckr.org/service-template/aspnetapp:latest
+      image: dtr.build.us.se.dckr.org/service-template/wcf:latest
     title: Windows Communication Framework (WCF)
-
