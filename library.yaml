@@ -33,6 +33,57 @@ services:
 - apiVersion: v1alpha1
   kind: ServiceTemplate
   metadata:
+    name: aspnet-mvc
+    platforms:
+      - windows
+  spec:
+    description: ASP.NET web application using the MVC Framework
+    icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
+    parameters:
+    - name: externalPort
+      description: External Port
+      type: string
+      defaultValue: "8000"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/aspnet-mvc:latest
+    title: ASP.NET Framework - MVC
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    name: aspnet-webforms
+    platforms:
+      - windows
+  spec:
+    description: ASP.NET web application
+    icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
+    parameters:
+    - name: externalPort
+      description: External Port
+      type: string
+      defaultValue: "8000"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/aspnet-webforms:latest
+    title: ASP.NET Framework - Web Forms
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    name: wcf
+    platforms:
+      - windows
+  spec:
+    description: Application implementing Windows Communication Framework (WCF)
+    icon: https://applicationdesigner.s3.amazonaws.com/assets/aspnetcore.png
+    parameters:
+    - name: externalPort
+      description: External Port
+      type: string
+      defaultValue: "8000"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/wcf:latest
+    title: Windows Communication Framework (WCF)
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
     creationTimestamp: "0001-01-01T00:00:00Z"
     name: signup-database
     platforms:
