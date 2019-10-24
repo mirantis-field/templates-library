@@ -1,0 +1,205 @@
+apiVersion: v1
+data:
+  mysql_password: RG9ja2VyY29uISEh
+kind: Secret
+metadata:
+  labels:
+    com.docker.stack.namespace: signup
+  name: mysql-password
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    com.docker.service.id: signup-database
+    com.docker.service.name: database
+    com.docker.stack.namespace: signup
+  name: database
+spec:
+  ports:
+  - name: database
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    com.docker.service.id: signup-database
+    com.docker.service.name: database
+    com.docker.stack.namespace: signup
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    com.docker.service.id: signup-dotnet-api
+    com.docker.service.name: dotnet-api
+    com.docker.stack.namespace: signup
+  name: dotnet-api
+spec:
+  ports:
+  - name: dotnet-api
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    com.docker.service.id: signup-dotnet-api
+    com.docker.service.name: dotnet-api
+    com.docker.stack.namespace: signup
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    com.docker.service.id: signup-java-web
+    com.docker.service.name: java-web
+    com.docker.stack.namespace: signup
+  name: java-web
+spec:
+  ports:
+  - name: java-web
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    com.docker.service.id: signup-java-web
+    com.docker.service.name: java-web
+    com.docker.stack.namespace: signup
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    com.docker.service.id: signup-database
+    com.docker.service.name: database
+    com.docker.stack.namespace: signup
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      com.docker.service.id: signup-database
+      com.docker.service.name: database
+      com.docker.stack.namespace: signup
+  template:
+    metadata:
+      labels:
+        com.docker.service.id: signup-database
+        com.docker.service.name: database
+        com.docker.stack.namespace: signup
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mysql-password
+        image: dtr.west.us.se.dckr.org/derrick.miller-dev/signup-db
+        imagePullPolicy: IfNotPresent
+        name: database
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        volumeMounts:
+        - name: signup-db-pv-data
+          mountPath: /var/lib/mysql
+          subPath: signup-data
+      restartPolicy: Always
+      volumes:
+      - name: signup-db-pv-data
+        persistentVolumeClaim:
+          claimName: signup-db-pv-claim
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    com.docker.service.id: signup-dotnet-api
+    com.docker.service.name: dotnet-api
+    com.docker.stack.namespace: signup
+  name: dotnet-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      com.docker.service.id: signup-dotnet-api
+      com.docker.service.name: dotnet-api
+      com.docker.stack.namespace: signup
+  template:
+    metadata:
+      labels:
+        com.docker.service.id: signup-dotnet-api
+        com.docker.service.name: dotnet-api
+        com.docker.stack.namespace: signup
+    spec:
+      containers:
+      - image: dtr.west.us.se.dckr.org/derrick.miller-dev/signup-api
+        imagePullPolicy: IfNotPresent
+        name: dotnet-api
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    com.docker.service.id: signup-java-web
+    com.docker.service.name: java-web
+    com.docker.stack.namespace: signup
+  name: java-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      com.docker.service.id: signup-java-web
+      com.docker.service.name: java-web
+      com.docker.stack.namespace: signup
+  template:
+    metadata:
+      labels:
+        com.docker.service.id: signup-java-web
+        com.docker.service.name: java-web
+        com.docker.stack.namespace: signup
+    spec:
+      containers:
+      - env:
+        - name: BASEURI
+          value: http://dotnet-api/api/users
+        image: dtr.west.us.se.dckr.org/derrick.miller-dev/signup-web:2
+        imagePullPolicy: IfNotPresent
+        name: java-web
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: signup-ingress
+spec:
+  rules:
+  - host: signup-dev.kube.west.us.se.dckr.org
+    http:
+      paths:
+      - backend:
+          serviceName: java-web
+          servicePort: 8080
+        path: /
+status:
+  loadBalancer: {}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: signup-db-pv-claim
+spec:
+  storageClassName: efs-gp
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 215Mi

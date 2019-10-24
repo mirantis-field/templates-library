@@ -1,4 +1,5 @@
-FROM dtr.build.us.se.dckr.org/library/mysql:{{ .Parameters.mysqlVersion }}
+#FROM dtr.build.us.se.dckr.org/library/mysql:{{ .Parameters.mysqlVersion }}
+FROM mysql:{{ .Parameters.mysqlVersion }}
 
 COPY docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/
 

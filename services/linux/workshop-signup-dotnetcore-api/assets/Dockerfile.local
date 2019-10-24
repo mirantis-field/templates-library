@@ -1,0 +1,28 @@
+ARG build_image=microsoft/dotnet:{{ .Parameteres.workshopDotNetCoreSdkVersion }}
+ARG base_image=microsoft/dotnet:{{ .Parameteres.workshopDotNetCoreRuntimeVersion }}
+
+###############################################################################
+# BUILD
+###############################################################################
+FROM ${build_image} as builder
+
+WORKDIR /src
+COPY SignupApiCore/SignupApiCore.csproj .
+RUN dotnet restore
+
+COPY SignupApiCore/ .
+RUN dotnet publish
+
+
+
+
+
+###############################################################################
+# FINAL
+###############################################################################
+FROM ${base_image}
+
+CMD ["dotnet", "SignupApiCore.dll"]
+
+WORKDIR /dotnetapp
+COPY --from=builder /src/bin/Debug/netcoreapp2.2/publish .
