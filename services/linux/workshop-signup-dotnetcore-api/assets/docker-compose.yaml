@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  {{ .Name }}:
+    build: {{ .Name }}
+    depends_on:
+      - workshop-signup-mysql-db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Local
+    # networks:
+    #   - back-end
+    #   - front-end
+    ports:
+      - "57989:80"
+
+# networks:
+#     back-end:
+#     front-end:

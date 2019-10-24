@@ -1,5 +1,5 @@
-ARG build_image=microsoft/dotnet:{{ .Parameteres.workshopDotNetCoreSdkVersion }}
-ARG base_image=microsoft/dotnet:{{ .Parameteres.workshopDotNetCoreRuntimeVersion }}
+ARG build_image=microsoft/dotnet:{{ .Parameters.workshopDotNetCoreSdkVersion }}
+ARG base_image=microsoft/dotnet:{{ .Parameters.workshopDotNetCoreRuntimeVersion }}
 
 ###############################################################################
 # BUILD

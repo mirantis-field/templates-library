@@ -85,7 +85,7 @@ services:
   kind: ServiceTemplate
   metadata:
     creationTimestamp: "0001-01-01T00:00:00Z"
-    name: workshop-signup-database
+    name: workshop-signup-mysql-db
     platforms:
     - linux
   spec:
@@ -114,7 +114,7 @@ services:
       name: mysqlPassword
       type: string
     source:
-      image: dtr.build.us.se.dckr.org/service-template/workshop-signup-database:latest
+      image: dtr.build.us.se.dckr.org/service-template/workshop-signup-mysql-db:latest
     title: MySQL Database for Signup App
 - apiVersion: v1alpha1
   kind: ServiceTemplate
@@ -162,7 +162,7 @@ services:
       values:
       - description: "2.2.104-sdk-alpine3.8"
         value: "2.2.104-sdk-alpine3.8"
-    - defaultValue: 2.2.2-aspnetcore-runtime-alpine3.8"
+    - defaultValue: "2.2.2-aspnetcore-runtime-alpine3.8"
       description: .NET Core Runtime Version
       name: workshopDotNetCoreRuntimeVersion
       type: enum
@@ -172,16 +172,3 @@ services:
     source:
       image: dtr.build.us.se.dckr.org/service-template/workshop-signup-dotnetcore-api:latest
     title: .NET Core API Workshop Signup App
-- apiVersion: v1alpha1
-  kind: ServiceTemplate
-  metadata:
-    creationTimestamp: "0001-01-01T00:00:00Z"
-    name: workshop-signup-root
-    platforms:
-    - linux
-  spec:
-    description: Root structure of application (.yamls, scripts, Jenkinsfile, orchestrators)
-    icon: https://docker-application-template.s3.amazonaws.com/assets/java.png
-    source:
-      image: dtr.build.us.se.dckr.org/service-template/workshop-signup-root:latest
-    title: Top-level Project for Workshop Signup App

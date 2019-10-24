@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  {{ .Name }}:
+    build: {{ .Name }}
+    depends_on:
+      - workshop-signup-dotnetcore-api
+    environment:
+      BASEURI: http://workshop-signup-dotnetcore-api/api/users
+    # networks:
+    #   - front-end
+    ports:
+      - "8080:8080"
+
+# networks:
+#     front-end:
