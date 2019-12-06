@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  {{ .Name }}:
+    build: {{ .Name }}
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+    # networks:
+    #   - back-end
+    security_opt:
+      - seccomp:unconfined
+    secrets:
+      - mysql_root_password
+
+# networks:
+#     back-end:
+
+secrets:
+    mysql_root_password:
+        file: {{ .Name }}/secrets/mysql_root_password

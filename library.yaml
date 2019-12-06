@@ -81,3 +81,114 @@ services:
     source:
       image: dtr.build.us.se.dckr.org/service-template/wcf:latest
     title: Windows Communication Framework (WCF)
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    creationTimestamp: "0001-01-01T00:00:00Z"
+    name: workshop-signup-mysql-db
+    platforms:
+    - linux
+  spec:
+    description: MySQL Database
+    icon: https://docker-application-template.s3.amazonaws.com/assets/mysql.png
+    parameters:
+    - defaultValue: "8.0.15"
+      description: MySQL Version
+      name: mysqlVersion
+      type: enum
+      values:
+      - description: "8.0.15"
+        value: "8.0.15"
+      - description: "5.7.24"
+        value: "5.7.24"
+      - description: "5.6.42"
+        value: "5.6.42"
+    - defaultValue: "signup"
+      description: Database name
+      name: mysqlDatabaseName
+      type: string
+    - defaultValue: "gordon"
+      description: Username
+      name: mysqlUserName
+      type: string
+    - defaultValue: "password"
+      description: Password
+      name: mysqlPassword
+      type: string
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/workshop-signup-mysql-db:latest
+    title: MySQL Database for Signup App
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    creationTimestamp: "0001-01-01T00:00:00Z"
+    name: workshop-signup-java-app
+    platforms:
+    - linux
+  spec:
+    description: Java application
+    icon: https://www.oracle.com/ocom/groups/public/@otn/documents/digitalasset/1917282.jpg
+    parameters:
+    - defaultValue: "latest"
+      description: Maven version
+      name: workshopJavaAppMavenVersion
+      type: enum
+      values:
+      - description: "latest"
+        value: "latest"
+    - defaultValue: "7-jre8"
+      description: Java version
+      name: workshopJavaAppJavaVersion
+      type: enum
+      values:
+        - description: "7-jre8"
+          value: "7-jre8"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/workshop-signup-java-app:latest
+    title: Java app for Workshop Signup App
+- apiVersion: v1alpha1
+  kind: ServiceTemplate
+  metadata:
+    creationTimestamp: "0001-01-01T00:00:00Z"
+    name: workshop-signup-dotnetcore-api
+    platforms:
+    - linux
+  spec:
+    description: .NET Core application
+    icon: https://c.s-microsoft.com/favicon.ico?v2
+    parameters:
+    - defaultValue: "2.2.104-sdk-alpine3.8"
+      description: .NET Core SDK version
+      name: workshopDotNetCoreSdkVersion
+      type: enum
+      values:
+      - description: "2.2.104-sdk-alpine3.8"
+        value: "2.2.104-sdk-alpine3.8"
+    - defaultValue: "2.2.2-aspnetcore-runtime-alpine3.8"
+      description: .NET Core Runtime Version
+      name: workshopDotNetCoreRuntimeVersion
+      type: enum
+      values:
+        - description: "2.2.2-aspnetcore-runtime-alpine3.8"
+          value: "2.2.2-aspnetcore-runtime-alpine3.8"
+    source:
+      image: dtr.build.us.se.dckr.org/service-template/workshop-signup-dotnetcore-api:latest
+    title: .NET Core API Workshop Signup App
+templates:
+- apiVersion: v1alpha1
+  kind: ApplicationTemplate
+  metadata:
+    creationTimestamp: "0001-01-01T00:00:00Z"
+    name: workshop-signup-app
+    platforms:
+    - linux
+  spec:
+    description: Workshop signup app with 3 tiers - web, api, db
+    services:
+    - name: workshop-signup-java-app
+      serviceId: workshop-signup-java-app
+    - name: workshop-signup-dotnetcore-api
+      serviceId: workshop-signup-dotnetcore-api
+    - name: workshop-signup-mysql-db
+      serviceId: workshop-signup-mysql-db
+    title: Workshop Signup App
